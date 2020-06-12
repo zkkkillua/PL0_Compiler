@@ -1,16 +1,16 @@
 #include "utilities.h"
 
-codeType REG_I;		//Ö¸Áî¼Ä´æÆ÷REG_I£¬´æ·Åµ±Ç°ÒªÖ´ĞĞµÄ´úÂë
-int REG_P = 0;		//³ÌĞòµØÖ·¼Ä´æÆ÷REG_P£¬´æ·ÅÏÂÒ»ÌõÒªÖ´ĞĞµÄÖ¸ÁîµÄµØÖ·
-int REG_T = 0;		//Õ»¶¥Ö¸Ê¾¼Ä´æÆ÷REG_T
-int REG_B = 0;		//»ùÖ·¼Ä´æÆ÷REG_B£¬´æ·Åµ±Ç°ÔËĞĞ¹ı³ÌµÄÊı¾İÇøÔÚSTACKÖĞµÄÆğÊ¼µØÖ·
+codeType REG_I;		//æŒ‡ä»¤å¯„å­˜å™¨REG_Iï¼Œå­˜æ”¾å½“å‰è¦æ‰§è¡Œçš„ä»£ç 
+int REG_P = 0;		//ç¨‹åºåœ°å€å¯„å­˜å™¨REG_Pï¼Œå­˜æ”¾ä¸‹ä¸€æ¡è¦æ‰§è¡Œçš„æŒ‡ä»¤çš„åœ°å€
+int REG_T = 0;		//æ ˆé¡¶æŒ‡ç¤ºå¯„å­˜å™¨REG_T
+int REG_B = 0;		//åŸºå€å¯„å­˜å™¨REG_Bï¼Œå­˜æ”¾å½“å‰è¿è¡Œè¿‡ç¨‹çš„æ•°æ®åŒºåœ¨STACKä¸­çš„èµ·å§‹åœ°å€
 int dataStack[1000];
 
-int getBase(int lev)	// ¸ù¾İ²ã²î£¬Ñ°ÕÒÆğÊ¼µØÖ·
+int getBase(int lev)	// æ ¹æ®å±‚å·®ï¼Œå¯»æ‰¾èµ·å§‹åœ°å€
 {
-	int b = REG_B;		//´Óµ±Ç°²ã¿ªÊ¼
+	int b = REG_B;		//ä»å½“å‰å±‚å¼€å§‹
 	while (lev > 0) {
-		b = dataStack[b];	//¸ù¾İ»ùÖ·ÄÚÈİ£¨SL£©ÕÒµ½ÉÏÒ»²ãµÄ»ùÖ·
+		b = dataStack[b];	//æ ¹æ®åŸºå€å†…å®¹ï¼ˆSLï¼‰æ‰¾åˆ°ä¸Šä¸€å±‚çš„åŸºå€
 		lev--;
 	}
 	return b;
@@ -22,10 +22,10 @@ void Interpreter()
 	REG_P = 0;
 	REG_T = 0;
 	REG_B = 0;
-	fill(dataStack, dataStack + 1000, 0);//³õÊ¼»¯Êı¾İÇø
-	dataStack[0] = 0;	//Ö÷³ÌĞòSLÎª0
-	dataStack[1] = 0;	//Ö÷³ÌĞòDLÎª0
-	dataStack[2] = 0;	//Ö÷³ÌĞòRAÎª0
+	fill(dataStack, dataStack + 1000, 0);//åˆå§‹åŒ–æ•°æ®åŒº
+	dataStack[0] = 0;	//ä¸»ç¨‹åºSLä¸º0
+	dataStack[1] = 0;	//ä¸»ç¨‹åºDLä¸º0
+	dataStack[2] = 0;	//ä¸»ç¨‹åºRAä¸º0
 	do {
 		REG_I = CODE[REG_P++];
 		switch (REG_I.f)
@@ -41,11 +41,11 @@ void Interpreter()
 			dataStack[REG_I.a + getBase(REG_I.l)] = dataStack[REG_T];
 			break;
 		case 3:
-			dataStack[REG_T] = getBase(REG_I.l);	//Õ»¶¥Ñ¹Èë¾²Ì¬Á´SL
-			dataStack[REG_T + 1] = REG_B;			//Õ»¶¥Ñ¹Èëµ±Ç°Êı¾İÇø»ùÖ·£¬×÷Îª¶¯Ì¬Á´DL
-			dataStack[REG_T + 2] = REG_P;			//Õ»¶¥Ñ¹Èëµ±Ç°PC£¬×÷Îª·µ»ØµØÖ·RA
-			REG_B = REG_T;							//µ±Ç°Êı¾İÇø»ùÖ·Îªµ±Ç°µÄÕ»¶¥
-			REG_P = REG_I.a;						//³ÌĞòÌø×ªµ½a´¦¼ÌĞøÖ´ĞĞ
+			dataStack[REG_T] = getBase(REG_I.l);	//æ ˆé¡¶å‹å…¥é™æ€é“¾SL
+			dataStack[REG_T + 1] = REG_B;			//æ ˆé¡¶å‹å…¥å½“å‰æ•°æ®åŒºåŸºå€ï¼Œä½œä¸ºåŠ¨æ€é“¾DL
+			dataStack[REG_T + 2] = REG_P;			//æ ˆé¡¶å‹å…¥å½“å‰PCï¼Œä½œä¸ºè¿”å›åœ°å€RA
+			REG_B = REG_T;							//å½“å‰æ•°æ®åŒºåŸºå€ä¸ºå½“å‰çš„æ ˆé¡¶
+			REG_P = REG_I.a;						//ç¨‹åºè·³è½¬åˆ°aå¤„ç»§ç»­æ‰§è¡Œ
 			break;
 		case 4:
 			REG_T += REG_I.a;
@@ -60,80 +60,80 @@ void Interpreter()
 		case 7:
 			switch (REG_I.a)
 			{
-			case 0:		// ·µ»Ø
-				REG_T = REG_B;					//ÊÍ·ÅÕâ¶Î×Ó¹ı³ÌÕ¼ÓÃµÄÊı¾İÕ»¿Õ¼ä
-				REG_B = dataStack[REG_T + 1];	//Êı¾İ¶Î»ùÖ·ÎªDL
-				REG_P = dataStack[REG_T + 2];	//·µ»ØµØÖ·ÎªRA
+			case 0:		// è¿”å›
+				REG_T = REG_B;					//é‡Šæ”¾è¿™æ®µå­è¿‡ç¨‹å ç”¨çš„æ•°æ®æ ˆç©ºé—´
+				REG_B = dataStack[REG_T + 1];	//æ•°æ®æ®µåŸºå€ä¸ºDL
+				REG_P = dataStack[REG_T + 2];	//è¿”å›åœ°å€ä¸ºRA
 				break;
-			case 1:		// È¡¸ºÊı
+			case 1:		// å–è´Ÿæ•°
 				dataStack[REG_T - 1] = -dataStack[REG_T - 1];
 				break;
-			case 2:		// ¼Ó·¨
+			case 2:		// åŠ æ³•
 				REG_T--;
 				dataStack[REG_T - 1] = dataStack[REG_T - 1] + dataStack[REG_T];
 				break;
-			case 3:		// ¼õ·¨
+			case 3:		// å‡æ³•
 				REG_T--;
 				dataStack[REG_T - 1] = dataStack[REG_T - 1] - dataStack[REG_T];
 				break;
-			case 4:		// ³Ë·¨
+			case 4:		// ä¹˜æ³•
 				REG_T--;
 				dataStack[REG_T - 1] = dataStack[REG_T - 1] * dataStack[REG_T];
 				break;
-			case 5:		// ³ı·¨
+			case 5:		// é™¤æ³•
 				REG_T--;
 				dataStack[REG_T - 1] = dataStack[REG_T - 1] / dataStack[REG_T];
 				break;
-			case 6:		// ÅĞ¶ÏÏàµÈ
+			case 6:		// åˆ¤æ–­ç›¸ç­‰
 				REG_T--;
 				if (dataStack[REG_T - 1] == dataStack[REG_T])
 					dataStack[REG_T - 1] = 1;
 				else
 					dataStack[REG_T - 1] = 0;
 				break;
-			case 7:		// ÅĞ¶Ï²»µÈ
+			case 7:		// åˆ¤æ–­ä¸ç­‰
 				REG_T--;
 				if (dataStack[REG_T - 1] != dataStack[REG_T])
 					dataStack[REG_T - 1] = 1;
 				else
 					dataStack[REG_T - 1] = 0;
 				break;
-			case 8:		// ÅĞ¶ÏĞ¡ÓÚ
+			case 8:		// åˆ¤æ–­å°äº
 				REG_T--;
 				if (dataStack[REG_T - 1] < dataStack[REG_T])
 					dataStack[REG_T - 1] = 1;
 				else
 					dataStack[REG_T - 1] = 0;
 				break;
-			case 9:		// ÅĞ¶Ï²»Ğ¡ÓÚ
+			case 9:		// åˆ¤æ–­ä¸å°äº
 				REG_T--;
 				if (dataStack[REG_T - 1] >= dataStack[REG_T])
 					dataStack[REG_T - 1] = 1;
 				else
 					dataStack[REG_T - 1] = 0;
 				break;
-			case 10:	// ÅĞ¶Ï´óÓÚ
+			case 10:	// åˆ¤æ–­å¤§äº
 				REG_T--;
 				if (dataStack[REG_T - 1] > dataStack[REG_T])
 					dataStack[REG_T - 1] = 1;
 				else
 					dataStack[REG_T - 1] = 0;
 				break;
-			case 11:	// ÅĞ¶Ï²»´óÓÚ
+			case 11:	// åˆ¤æ–­ä¸å¤§äº
 				REG_T--;
 				if (dataStack[REG_T - 1] <= dataStack[REG_T])
 					dataStack[REG_T - 1] = 1;
 				else
 					dataStack[REG_T - 1] = 0;
 				break;
-			case 12:	// Êä³öÕ»¶¥ÄÚÈİ
+			case 12:	// è¾“å‡ºæ ˆé¡¶å†…å®¹
 				cout << dataStack[REG_T - 1];
 				cout << " ";
 				break;
-			case 13:	// Êä³ö»»ĞĞ
+			case 13:	// è¾“å‡ºæ¢è¡Œ
 				cout << endl;
 				break;
-			case 14:	// ¶ÁÈë
+			case 14:	// è¯»å…¥
 				int num;
 				cin >> num;
 				dataStack[REG_T++] = num;
@@ -149,6 +149,6 @@ void Interpreter()
 		}
 	} while (REG_P != 0);
 
-	delete[]CODE;	//Ê¹ÓÃÍê±ÏÖ®ºóÉ¾³ı
+	delete[]CODE;	//ä½¿ç”¨å®Œæ¯•ä¹‹ååˆ é™¤
 }
 
